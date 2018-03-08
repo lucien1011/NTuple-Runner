@@ -2,7 +2,7 @@
 
 ##____________________________________________________________________________||
 import os
-from UFTier2Utils import listdir_uberftp
+from ..Utils.UFTier2Utils import listdir_uberftp
 from FileInfo import FileInfo
 
 ##____________________________________________________________________________||

@@ -7,10 +7,10 @@ from FileInfo import FileInfo
 
 ##____________________________________________________________________________||
 class Component(object):
-    def __init__(self, path, name):
+    def __init__(self, path, name, keyword="tree"):
         self.path = path
         self.name = name
-        self.fileNames = [n for n in listdir_uberftp(self.path) if n.endswith(".root") and "tree" in n]
+        self.fileNames = [n for n in listdir_uberftp(self.path) if n.endswith(".root") and keyword in n]
 
         self._fileDict = { }
         self._cfg = None

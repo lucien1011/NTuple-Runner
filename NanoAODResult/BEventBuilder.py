@@ -12,7 +12,7 @@ class BEventBuilder(object):
     def build(self, component):
         chain = ROOT.TChain(self._treeName)
         for fileInfo in component.fileInfos():
-            chain.Add(fileInfo.uberftp_path()) 
+            chain.Add(fileInfo.file_path()) 
         return BEvents(chain, self._maxEvents)
 
 ##____________________________________________________________________________||

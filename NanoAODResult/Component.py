@@ -8,11 +8,15 @@ import copy
 
 ##____________________________________________________________________________||
 class Component(object):
-    def __init__(self, path, name, keyword="tree"):
+    def __init__(self, path, name, keyword="tree",inUFTier2=True):
         self.path = path
         self.name = name
         self.keyword = keyword
-        self.fileNames = [n for n in listdir_uberftp(self.path) if n.endswith(".root") and keyword in n]
+        self.inUFTier2 = inUFTier2
+        if self.inUFTier2:
+            self.fileNames = [n for n in listdir_uberftp(self.path) if n.endswith(".root") and keyword in n]
+        else:    
+            self.fileNames = [n for n in os.listdir(self.path) if n.endswith(".root") and keyword in n]
 
         self._fileDict = { }
         self._cfg = None
@@ -22,7 +26,7 @@ class Component(object):
             if name not in self.fileNames:
                 raise AttributeError("'%s' object has no attribute '%s'" % (self.__class__.__name__, name))
             path = os.path.join(self.path, name)
-            self._fileDict[name] = FileInfo(path)
+            self._fileDict[name] = FileInfo(path,self.inUFTier2)
         return self._fileDict[name]
 
     def __getstate__(self):
@@ -39,7 +43,7 @@ class Component(object):
         for fileName in self.fileNames:
             tmpCmp = copy.deepcopy(self)
             tmpCmp.fileNames = [fileName]
-            tmpCmp.name = prefix+fileName
+            tmpCmp.name = prefix+fileName.replace(".root","")
             componentList.append(tmpCmp)
         return componentList
 

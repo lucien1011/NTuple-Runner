@@ -1,4 +1,4 @@
-# Lucien Lo <tai.sakuma@cern.ch>
+# Lucien Lo <kin.ho.lo@cern.ch>
 import os
 import ROOT
 from ..Events import BEvents

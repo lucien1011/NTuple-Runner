@@ -8,7 +8,7 @@ import copy
 
 ##____________________________________________________________________________||
 class Component(object):
-    def __init__(self, path, name, keyword="tree",inUFTier2=True):
+    def __init__(self, path, name, keyword="",exclude="",inUFTier2=True):
         self.path = path
         self.name = name
         self.keyword = keyword
@@ -17,6 +17,8 @@ class Component(object):
             self.fileNames = [n for n in listdir_uberftp(self.path) if n.endswith(".root") and keyword in n]
         else:    
             self.fileNames = [n for n in os.listdir(self.path) if n.endswith(".root") and keyword in n]
+        if exclude:
+            self.fileNames = [n for n in self.fileNames if exclude not in n]
 
         self._fileDict = { }
         self._cfg = None

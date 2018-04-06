@@ -17,5 +17,5 @@ class FileInfo(object):
             return self.path
 
     def uberftp_path(self):
-        return "root://cmsio2.rc.ufl.edu/"+self.path.replace("/cms/data","")
+        return "root://cmsio3.rc.ufl.edu/"+self.path.replace("/cms/data","")
 

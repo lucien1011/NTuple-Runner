@@ -3,6 +3,8 @@
 ##____________________________________________________________________________||
 import os
 
+prefix_UFTier2 = "root://cmsio3.rc.ufl.edu/"
+
 ##____________________________________________________________________________||
 class FileInfo(object):
     def __init__(self, path,inUFTier2=False):
@@ -17,5 +19,5 @@ class FileInfo(object):
             return self.path
 
     def uberftp_path(self):
-        return "root://cmsio3.rc.ufl.edu/"+self.path.replace("/cms/data","")
+        return prefix_UFTier2+self.path.replace("/cms/data","")
 

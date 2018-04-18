@@ -2,8 +2,8 @@
 
 ##____________________________________________________________________________||
 import os
-from ..Utils.UFTier2Utils import listdir_uberftp
-from FileInfo import FileInfo
+from .Utils.UFTier2Utils import listdir_uberftp
+from .FileInfo import FileInfo
 import copy
 
 ##____________________________________________________________________________||

@@ -8,7 +8,7 @@ import copy
 
 ##____________________________________________________________________________||
 class Component(object):
-    def __init__(self, path, name, keyword="",exclude="",inUFTier2=True):
+    def __init__(self, path, name, keyword="",exclude="",inUFTier2=True,isMC=True):
         self.path = path
         self.name = name
         self.keyword = keyword
@@ -22,6 +22,7 @@ class Component(object):
 
         self._fileDict = { }
         self._cfg = None
+        self.isMC = isMC
 
     def __getattr__(self, name):
         if name not in self._fileDict:

@@ -11,3 +11,7 @@ class LambdaFunc(object):
         if not hasattr(self,"func"):
             self.begin()
         return self.func(*event)
+
+    def end(self):
+        del self.func
+        self.func = None

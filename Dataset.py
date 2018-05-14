@@ -27,6 +27,9 @@ class Dataset(object):
             raise RuntimeError, "Sorry other method of building Events class is not supported at the moment"
 
     def setSumWeight(self,fileName,histPath="SumWeight"):
-        inputHist = ROOT.TFile(fileName,"READ").Get(histPath)
+        inputFile = ROOT.TFile(fileName,"READ")
+        inputHist = inputFile.Get(histPath)
         if self.sumw: print "Overwriting sumw in datast "+self.name
         self.sumw = inputHist.Integral()
+        inputFile.Close()
+        

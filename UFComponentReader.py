@@ -18,9 +18,11 @@ class UFComponentReader(object):
         self.eventLoopRunner.begin()
 
     def read(self, dataset):
-        reader         = UFEventReader(dataset,self.sequence,self.writer)
-        eventLoop      = self.EventLoop(self.eventBuilder, self.eventSelection, dataset, reader)
-        self.eventLoopRunner.run(eventLoop)
+        components      = dataset.makeComponents()
+        for component in components:
+            reader          = UFEventReader(component,self.sequence,self.writer)
+            eventLoop       = self.EventLoop(self.eventBuilder, self.eventSelection, component, reader)
+            self.eventLoopRunner.run(eventLoop)
 
     def end(self):
         self.eventLoopRunner.end()

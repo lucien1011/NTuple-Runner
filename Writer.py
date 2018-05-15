@@ -7,7 +7,7 @@ class Writer(object):
     def __init__(self,dataset,outputInfo):
         self.outputInfo = outputInfo
         self.dataset = dataset
-        self.outputDir = self.outputInfo.outputDir+"/"+self.dataset.name+"/"
+        self.outputDir = self.outputInfo.outputDir+"/"+self.dataset.parent.name+"/"
         self.TFile = None
         self.objs = {}
         self.rootObjs = {}
@@ -24,7 +24,7 @@ class Writer(object):
 
     def initObjects(self):
         if hasattr(self.outputInfo,"TFileName"):
-            self.makeTFile(fileName=self.outputInfo.TFileName)
+            self.makeTFile(fileName=self.dataset.name+"_"+self.outputInfo.TFileName)
 
     def closeTFile(self):
         if self.TFile:

@@ -1,4 +1,5 @@
 from Core.Collector import Collector
+from Hadder import Hadder
 
 import os,ROOT
 
@@ -6,9 +7,14 @@ class EndSequence(object):
     def __init__(self):
         self.moduleList = []
         self.collector = Collector()
+        self.hadder = Hadder()
 
     def run(self,inputInfo):
         self.collector.makeSampleList(inputInfo.outputDir)
+        for sampleName in self.collector.samples:
+            print "Hadding "+sampleName
+            self.hadder.makeHaddScript(inputInfo.outputDir+sampleName,sampleName,inputInfo)
+            self.hadder.haddSampleDir(inputInfo.outputDir+sampleName)
         self.collector.openFiles(self.collector.samples,inputInfo)
         for module in self.moduleList:
             module(self.collector)

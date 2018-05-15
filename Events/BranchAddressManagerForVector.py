@@ -1,15 +1,13 @@
-# Tai Sakuma <tai.sakuma@cern.ch>
+# Tai Sakuma <tai.sakuma@gmail.com>
 import ROOT
 import re
 
 ##__________________________________________________________________||
 class BranchAddressManagerForVector(object):
     """The branch address manager for ROOT TTree
-
     This class manages ROOT.vector objects used for branch addresses
     of ROOT TTree. The main purpose of this class is to prevent
     multiple objects from being created for the same branch.
-
     All instances of this class share the data.
     """
 
@@ -17,7 +15,6 @@ class BranchAddressManagerForVector(object):
 
     def getVector(self, tree, branchName):
         """return the ROOT.vector object for the branch.
-
         """
 
         if (tree, branchName) in self.__class__.addressDict:

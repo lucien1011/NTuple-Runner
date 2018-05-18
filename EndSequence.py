@@ -4,17 +4,19 @@ from Hadder import Hadder
 import os,ROOT
 
 class EndSequence(object):
-    def __init__(self):
+    def __init__(self,skipHadd=False):
         self.moduleList = []
         self.collector = Collector()
         self.hadder = Hadder()
+        self.skipHadd = skipHadd
 
     def run(self,inputInfo,componentList):
         self.collector.makeSampleList(componentList)
-        for sampleName in self.collector.samples:
-            print "Hadding "+sampleName
-            self.hadder.makeHaddScript(inputInfo.outputDir+sampleName,sampleName,inputInfo)
-            self.hadder.haddSampleDir(inputInfo.outputDir+sampleName)
+        if not self.skipHadd:
+            for sampleName in self.collector.samples:
+                print "Hadding "+sampleName
+                self.hadder.makeHaddScript(inputInfo.outputDir+sampleName,sampleName,inputInfo)
+                self.hadder.haddSampleDir(inputInfo.outputDir+sampleName)
         self.collector.openFiles(self.collector.samples,inputInfo)
         for module in self.moduleList:
             module(self.collector)

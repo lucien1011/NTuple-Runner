@@ -16,9 +16,9 @@ class Writer(object):
     @staticmethod
     def makedirs(outputDir):
         if not os.path.exists(os.path.abspath(outputDir)):
-            os.makedirs(os.path.dirname(outputDir))
+            os.makedirs(os.path.abspath(outputDir))
 
-    def makeTFile(self,fileName="test.root"):        
+    def makeTFile(self,fileName="test.root"): 
         self.makedirs(self.outputDir)
         self.TFile = ROOT.TFile(self.outputDir+"/"+fileName,"RECREATE")
 

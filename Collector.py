@@ -5,8 +5,8 @@ class Collector(object):
         self.objDict = {}
         self.fileDict = {}
 
-    def makeSampleList(self,inputDir):
-        self.samples = [n for n in os.listdir(inputDir) if os.path.isdir(os.path.join(inputDir, n))]
+    def makeSampleList(self,componentList):
+        self.samples = [cmp.name for cmp in componentList]
     
     def openFiles(self,samples,inputInfo):
         for sample in samples:

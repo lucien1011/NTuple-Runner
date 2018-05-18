@@ -9,8 +9,8 @@ class EndSequence(object):
         self.collector = Collector()
         self.hadder = Hadder()
 
-    def run(self,inputInfo):
-        self.collector.makeSampleList(inputInfo.outputDir)
+    def run(self,inputInfo,componentList):
+        self.collector.makeSampleList(componentList)
         for sampleName in self.collector.samples:
             print "Hadding "+sampleName
             self.hadder.makeHaddScript(inputInfo.outputDir+sampleName,sampleName,inputInfo)

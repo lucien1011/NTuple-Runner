@@ -14,6 +14,7 @@ class UFEventReader(object):
             module.writer = self.writer
             module.dataset = self.dataset
             module.begin()
+            module.beginEvents(events)
 
     def end(self):
         for module in self.sequence:

@@ -6,6 +6,9 @@ class Module(object):
     def begin(self):
         pass
 
+    def beginEvents(self,events):
+        pass
+
     def end(self):
         pass
 

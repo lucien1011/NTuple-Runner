@@ -7,6 +7,8 @@ class Collector(object):
 
     def makeSampleList(self,componentList):
         self.samples = [cmp.name for cmp in componentList]
+        self.mcSamples = [cmp.name for cmp in componentList if cmp.isMC]
+        self.dataSamples = [cmp.name for cmp in componentList if not cmp.isMC]
     
     def openFiles(self,samples,inputInfo):
         for sample in samples:

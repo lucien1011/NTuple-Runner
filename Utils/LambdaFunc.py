@@ -15,4 +15,4 @@ class LambdaFunc(object):
     def end(self):     
         if hasattr(self,"func"):
             del self.func
-            self.func = None
+            #self.func = None

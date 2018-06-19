@@ -5,16 +5,18 @@ import ROOT
 import copy
 
 class Dataset(object):
-    def __init__(self,name,componentList,isMC=True,sumw=None,xs=None,maxEvents=-1,build_type="TTree",lumi=1.):
+    def __init__(self,name,componentList,isMC=True,sumw=None,xs=None,maxEvents=-1,build_type="TTree",lumi=1.,json=None):
         self.name = name
         self.componentList = componentList
         self.isMC = isMC
+        self.isData = not self.isMC
         self.sumw = sumw
         self.xs = xs
         self.fb_to_pb_factor = 1000
         self.maxEvents = maxEvents
         self.build_type = build_type
         self.lumi = lumi
+        self.json = json
 
     def setSumWeight(self,fileName,histPath="SumWeight"):
         inputFile = ROOT.TFile(fileName,"READ")

@@ -35,5 +35,8 @@ class Dataset(object):
             tmpCmp.treeName = cmp.treeName
             tmpCmp.maxEvents = cmp.maxEvents
             tmpCmp.parent = self
+            tmpCmp.fdPaths = cmp.fdPaths
+            tmpCmp.fdFiles = cmp.fdFiles
+            tmpCmp.fdTrees = cmp.fdTrees
             componentList.append(tmpCmp)
         return componentList 

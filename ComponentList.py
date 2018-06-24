@@ -5,7 +5,7 @@ from .FileInfo import FileInfo
 import copy
 
 class Component(object):
-    def __init__(self,name,path,treeName,inUFTier2=True,maxEvents=-1):
+    def __init__(self,name,path,treeName,inUFTier2=True,maxEvents=-1,fdPaths=[]):
         self.name = name
         self.path = path
         self.treeName = treeName
@@ -13,6 +13,12 @@ class Component(object):
         self.fileInfo = FileInfo(path,inUFTier2)
         self.fileName = self.fileInfo.file_path()
         self.maxEvents = maxEvents
+        if fdPaths:
+            self.fdPaths = [(FileInfo(fdPath[0],inUFTier2).file_path(),fdPath[1]) for fdPath in fdPaths]
+        else:
+            self.fdPaths = []
+        self.fdFiles = []
+        self.fdTrees = []
 
 class ComponentList(object):
     def __init__(self,component_list):

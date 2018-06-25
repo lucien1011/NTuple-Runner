@@ -1,6 +1,7 @@
 from .ComponentList import ComponentList
 from .Events import BEvents
 from .Events import MultiBEvents
+from .FileInfo import FileInfo
 import ROOT
 import copy
 
@@ -18,8 +19,10 @@ class Dataset(object):
         self.lumi = lumi
         self.json = json
 
-    def setSumWeight(self,fileName,histPath="SumWeight"):
-        inputFile = ROOT.TFile(fileName,"READ")
+    def setSumWeight(self,fileName,histPath="SumWeight",inUFTier2=False):
+        fileInfo = FileInfo(fileName,inUFTier2)
+        fileName = fileInfo.file_path()
+        inputFile = ROOT.TFile.Open(fileName,"READ")
         inputHist = inputFile.Get(histPath)
         if self.sumw: print "Overwriting sumw in datast "+self.name
         self.sumw = inputHist.Integral()

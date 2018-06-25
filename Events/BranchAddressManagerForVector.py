@@ -29,9 +29,11 @@ class BranchAddressManagerForVector(object):
 
         leafNames = [l.GetName() for l in tree.GetListOfLeaves()]
         list_fd = tree.GetListOfFriends()
-        if len(list_fd):
-            for fd in list_fd:
-                leafNames.extend([k.GetName() for k in fd.GetTree().GetListOfLeaves()])
+        try: 
+            if list_fd.GetSize():
+                for fd in list_fd:
+                    leafNames.extend([k.GetName() for k in fd.GetTree().GetListOfLeaves()])
+        except ReferenceError: pass
 
         if branchName not in leafNames:
             return None

@@ -42,4 +42,12 @@ class Dataset(object):
             tmpCmp.fdFiles = cmp.fdFiles
             tmpCmp.fdTrees = cmp.fdTrees
             componentList.append(tmpCmp)
-        return componentList 
+        return componentList
+
+    def add(self,obj):
+        if self.isMC != obj.isMC: raise RuntimeError, "Can't add dataset with MC and data together"
+        if self.xs != obj.xs: raise RuntimeError, "Can't add dataset with different xs"
+        if self.sumw != None and obj.sumw != None: self.sumw += obj.sumw
+        self.componentList.extend(obj.componentList)
+
+

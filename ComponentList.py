@@ -32,3 +32,6 @@ class ComponentList(object):
             raise IndexError
         else:
             return self.list[index]
+    
+    def extend(self,obj):
+        self.list.extend(obj)

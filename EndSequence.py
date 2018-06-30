@@ -10,14 +10,22 @@ class EndSequence(object):
         self.hadder = Hadder()
         self.skipHadd = skipHadd
 
-    def run(self,inputInfo,componentList):
+    def run(self,inputInfo,componentList,mergeSampleDict={}):
         self.collector.makeSampleList(componentList)
+        self.collector.makeMergedSampleList(componentList,mergeSampleDict)
+        for sampleName in self.collector.mergeSamples:
+            self.makedirs(inputInfo.outputDir+sampleName)
         if not self.skipHadd:
             for sampleName in self.collector.samples:
                 print "Hadding "+sampleName
-                self.hadder.makeHaddScript(inputInfo.outputDir+sampleName,sampleName,inputInfo)
+                self.hadder.makeHaddScript(inputInfo.outputDir+sampleName,[sampleName],inputInfo)
+                self.hadder.haddSampleDir(inputInfo.outputDir+sampleName)
+            for sampleName in self.collector.mergeSamples:
+                print "Hadding (and merging) "+sampleName
+                self.hadder.makeHaddScript(inputInfo.outputDir+sampleName,mergeSampleDict[sampleName],inputInfo)
                 self.hadder.haddSampleDir(inputInfo.outputDir+sampleName)
         self.collector.openFiles(self.collector.samples,inputInfo)
+        self.collector.openFiles(self.collector.mergeSamples,inputInfo)
         for module in self.moduleList:
             module(self.collector)
         self.collector.closeFiles()
@@ -33,3 +41,7 @@ class EndSequence(object):
             raise IndexError
         else:
             return self.moduleList[index]
+
+    def makedirs(self,path):
+        if not os.path.exists(os.path.abspath(path)):
+            os.makedirs(os.path.abspath(path))

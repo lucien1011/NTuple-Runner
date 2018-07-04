@@ -8,7 +8,8 @@ class Collector(object):
     def makeSampleList(self,componentList):
         self.samples = [cmp.name for cmp in componentList]
         self.mcSamples = [cmp.name for cmp in componentList if cmp.isMC]
-        self.dataSamples = [cmp.name for cmp in componentList if not cmp.isMC]
+        self.dataSamples = [cmp.name for cmp in componentList if cmp.isData]
+        self.signalSamples = [cmp.name for cmp in componentList if cmp.isSignal]
         self.sampleDict = {cmp.name: cmp for cmp in componentList}
 
     def makeMergedSampleList(self,componentList,mergeCmpDict):

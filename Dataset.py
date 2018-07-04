@@ -6,7 +6,7 @@ import ROOT
 import copy
 
 class Dataset(object):
-    def __init__(self,name,componentList,isMC=True,sumw=None,xs=None,maxEvents=-1,build_type="TTree",lumi=1.,json=None):
+    def __init__(self,name,componentList,isMC=True,sumw=None,xs=None,maxEvents=-1,build_type="TTree",lumi=1.,json=None,isSignal=False):
         self.name = name
         self.componentList = componentList
         self.isMC = isMC
@@ -18,6 +18,9 @@ class Dataset(object):
         self.build_type = build_type
         self.lumi = lumi
         self.json = json
+        self.isSignal = isSignal
+        if self.isSignal and self.isData:
+            raise RuntimeError, "Dataset "+self.name+" can't be data and signal at the same time"
 
     def setSumWeight(self,fileName,histPath="SumWeight",inUFTier2=False):
         fileInfo = FileInfo(fileName,inUFTier2)

@@ -36,7 +36,7 @@ class Events(object):
     """
 
     def __init__(self, tree, maxEvents = -1):
-        self.file = tree.GetDirectory() # so a file won't close
+        self.file = tree.GetDirectory().GetFile() # so a file won't close
         self.tree = tree
         self.nEvents = min(self.tree.GetEntries(), maxEvents) if (maxEvents > -1) else self.tree.GetEntries()
         self.iEvent = -1
@@ -46,6 +46,7 @@ class Events(object):
             self.iEvent = -1
             raise IndexError("the index is out of range: " + str(i))
         self.iEvent = i
+
         self.tree.GetEntry(self.iEvent)
         return self
 

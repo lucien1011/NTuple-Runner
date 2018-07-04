@@ -1,3 +1,4 @@
+import os
 
 class Module(object):
     def __init__(self,name):
@@ -14,3 +15,8 @@ class Module(object):
 
     def analyze(self,event):
         pass
+
+    @staticmethod
+    def makedirs(outputDir):
+        if not os.path.exists(os.path.abspath(outputDir)):
+            os.makedirs(os.path.abspath(outputDir))

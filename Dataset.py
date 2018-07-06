@@ -6,7 +6,7 @@ import ROOT
 import copy
 
 class Dataset(object):
-    def __init__(self,name,componentList,isMC=True,sumw=None,xs=None,maxEvents=-1,build_type="TTree",lumi=1.,json=None,isSignal=False):
+    def __init__(self,name,componentList,isMC=True,sumw=None,xs=None,maxEvents=-1,build_type="TTree",lumi=1.,json=None,isSignal=False,plotLabel=""):
         self.name = name
         self.componentList = componentList
         self.isMC = isMC
@@ -21,6 +21,7 @@ class Dataset(object):
         self.isSignal = isSignal
         if self.isSignal and self.isData:
             raise RuntimeError, "Dataset "+self.name+" can't be data and signal at the same time"
+        self.plotLabel = plotLabel if plotLabel else self.name
 
     def setSumWeight(self,fileName,histPath="SumWeight",inUFTier2=False):
         fileInfo = FileInfo(fileName,inUFTier2)
@@ -52,5 +53,3 @@ class Dataset(object):
         if self.xs != obj.xs: raise RuntimeError, "Can't add dataset with different xs"
         if self.sumw != None and obj.sumw != None: self.sumw += obj.sumw
         self.componentList.extend(obj.componentList)
-
-

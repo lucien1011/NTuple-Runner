@@ -23,6 +23,9 @@ class Object(object):
         return self._p4
         pass
 
+    def getFriendValue(self,postfix,quantity):
+        return getattr(self._event,self._objName[:-1]+postfix+self._objName[-1]+quantity)[self._index]
+
 class Collection(object):
     def __init__(self,event,objName):
         self._event   = event   

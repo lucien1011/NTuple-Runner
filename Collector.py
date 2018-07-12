@@ -14,7 +14,16 @@ class Collector(object):
         self.sampleDict = {cmp.name: cmp for cmp in componentList}
 
     def makeMergedSampleList(self,componentList,mergeCmpDict):
-        self.mergeSamples = mergeCmpDict.keys()
+        self.mergeSamples = []
+        for sampleName in mergeCmpDict:
+            if all([name not in self.samples for name in mergeCmpDict[sampleName]]): continue
+            self.mergeSamples.append(sampleName)
+        self.mergeSampleDict = {}
+        for sampleName in self.mergeSamples:
+            self.mergeSampleDict[sampleName] = []
+            for name in mergeCmpDict[sampleName]:
+                if name not in self.samples: continue
+                self.mergeSampleDict[sampleName].append(name)
     
     def openFiles(self,samples,inputInfo):
         for sample in samples:

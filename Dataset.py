@@ -32,6 +32,19 @@ class Dataset(object):
         self.sumw = inputHist.Integral()
         inputFile.Close()
 
+    def setSumWeightFromHeppySkimReport(self,textFilePath):
+        eventsFile = open(textFilePath,"r").readlines()
+        for line in eventsFile:
+            if "All Events" in line:
+                nevent = float(line.split()[2])
+            if "Sum Weights" in line:
+                sweight = float(line.split()[2])
+        # self.nEvent[sample] = counters['Sum Weights']
+        assert nevent is not None and sweight is not None, "Can't find event count or sum weights in text file provided "+textFilePath
+        if self.sumw: print "Overwriting sumw in datast "+self.name
+        #self.datasetNEvents = nevent
+        self.sumw = sweight
+
     def makeComponents(self):
         componentList = []
         for icmp,cmp in enumerate(self.componentList):
@@ -42,7 +55,7 @@ class Dataset(object):
             tmpCmp.treeName = cmp.treeName
             tmpCmp.maxEvents = cmp.maxEvents
             tmpCmp.parent = self
-            tmpCmp.fdPaths = cmp.fdPaths
+            tmpCmp.fdConfigs = cmp.fdConfigs
             tmpCmp.fdFiles = cmp.fdFiles
             tmpCmp.fdTrees = cmp.fdTrees
             componentList.append(tmpCmp)

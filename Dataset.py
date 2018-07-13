@@ -23,8 +23,8 @@ class Dataset(object):
             raise RuntimeError, "Dataset "+self.name+" can't be data and signal at the same time"
         self.plotLabel = plotLabel if plotLabel else self.name
 
-    def setSumWeight(self,fileName,histPath="SumWeight",inUFTier2=False):
-        fileInfo = FileInfo(fileName,inUFTier2)
+    def setSumWeight(self,inputFileName,histPath="SumWeight",inUFTier2=False):
+        fileInfo = FileInfo(inputFileName,inUFTier2)
         fileName = fileInfo.file_path()
         inputFile = ROOT.TFile.Open(fileName,"READ")
         inputHist = inputFile.Get(histPath)

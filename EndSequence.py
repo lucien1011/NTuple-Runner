@@ -22,7 +22,7 @@ class EndSequence(object):
                 self.hadder.haddSampleDir(inputInfo.outputDir+sampleName)
             for sampleName in self.collector.mergeSamples:
                 print "Hadding (and merging) "+sampleName
-                self.hadder.makeHaddScript(inputInfo.outputDir+sampleName,mergeSampleDict[sampleName],inputInfo)
+                self.hadder.makeHaddScript(inputInfo.outputDir+sampleName,self.collector.mergeSampleDict[sampleName],inputInfo)
                 self.hadder.haddSampleDir(inputInfo.outputDir+sampleName)
         self.collector.openFiles(self.collector.samples,inputInfo)
         self.collector.openFiles(self.collector.mergeSamples,inputInfo)

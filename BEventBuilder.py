@@ -9,8 +9,8 @@ class BEventBuilder(object):
         inputPath = component.fileName
         file = ROOT.TFile.Open(inputPath)
         tree = file.Get(component.treeName)
-        for (filePath,treePath) in component.fdPaths:
-            tree.AddFriend(treePath,filePath)
+        for config in component.fdConfigs:
+            tree.AddFriend(config.treeName,config.getFilePath())
         return BEvents(tree, component.maxEvents)
 
 ##____________________________________________________________________________||

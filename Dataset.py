@@ -23,14 +23,27 @@ class Dataset(object):
             raise RuntimeError, "Dataset "+self.name+" can't be data and signal at the same time"
         self.plotLabel = plotLabel if plotLabel else self.name
 
-    def setSumWeight(self,fileName,histPath="SumWeight",inUFTier2=False):
-        fileInfo = FileInfo(fileName,inUFTier2)
+    def setSumWeight(self,inputFileName,histPath="SumWeight",inUFTier2=False):
+        fileInfo = FileInfo(inputFileName,inUFTier2)
         fileName = fileInfo.file_path()
         inputFile = ROOT.TFile.Open(fileName,"READ")
         inputHist = inputFile.Get(histPath)
         if self.sumw: print "Overwriting sumw in datast "+self.name
         self.sumw = inputHist.Integral()
         inputFile.Close()
+
+    def setSumWeightFromHeppySkimReport(self,textFilePath):
+        eventsFile = open(textFilePath,"r").readlines()
+        for line in eventsFile:
+            if "All Events" in line:
+                nevent = float(line.split()[2])
+            if "Sum Weights" in line:
+                sweight = float(line.split()[2])
+        # self.nEvent[sample] = counters['Sum Weights']
+        assert nevent is not None and sweight is not None, "Can't find event count or sum weights in text file provided "+textFilePath
+        if self.sumw: print "Overwriting sumw in datast "+self.name
+        #self.datasetNEvents = nevent
+        self.sumw = sweight
 
     def makeComponents(self):
         componentList = []
@@ -42,7 +55,7 @@ class Dataset(object):
             tmpCmp.treeName = cmp.treeName
             tmpCmp.maxEvents = cmp.maxEvents
             tmpCmp.parent = self
-            tmpCmp.fdPaths = cmp.fdPaths
+            tmpCmp.fdConfigs = cmp.fdConfigs
             tmpCmp.fdFiles = cmp.fdFiles
             tmpCmp.fdTrees = cmp.fdTrees
             componentList.append(tmpCmp)

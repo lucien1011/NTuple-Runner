@@ -19,5 +19,7 @@ class FileInfo(object):
             return self.path
 
     def uberftp_path(self):
-        return prefix_UFTier2+self.path.replace("/cms/data","")
-
+        if 'ufhpc' in os.environ['HOSTNAME']:
+            return self.path
+        else:
+            return prefix_UFTier2+self.path.replace("/cms/data","")

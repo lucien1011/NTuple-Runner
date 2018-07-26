@@ -10,6 +10,6 @@ class Hadder(object):
         basedir = os.path.dirname(dir_path)+"/"
         for sampleName in sampleNames:
             haddText += " {0}/*_{1}".format(basedir+sampleName,outputInfo.TFileName)+" "
-            haddText += "\n"
+            #haddText += "\n"
         outTextFile = open(dir_path+"/hadd.sh","w")
         outTextFile.write(haddText)

@@ -59,6 +59,8 @@ class Dataset(object):
             tmpCmp.fdConfigs = cmp.fdConfigs
             tmpCmp.fdFiles = cmp.fdFiles
             tmpCmp.fdTrees = cmp.fdTrees
+            tmpCmp.beginEntry = cmp.beginEntry
+            tmpCmp.reportInterval = cmp.reportInterval
             componentList.append(tmpCmp)
         return componentList
 

@@ -10,7 +10,7 @@ class EventLoopProgressReportWriter(object):
         return ProgressReport(
             name = dataset.name,
             done = event.iEvent + 1,
-            total = event.nEvents,
+            total = event.nEvents + event.beginEntry,
             taskid = taskid
         )
 

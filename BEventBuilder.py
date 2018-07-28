@@ -11,6 +11,6 @@ class BEventBuilder(object):
         tree = file.Get(component.treeName)
         for config in component.fdConfigs:
             tree.AddFriend(config.treeName,config.getFilePath())
-        return BEvents(tree, component.maxEvents)
+        return BEvents(tree, component.maxEvents, component.beginEntry)
 
 ##____________________________________________________________________________||

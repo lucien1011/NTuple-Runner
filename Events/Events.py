@@ -35,10 +35,16 @@ class Events(object):
 
     """
 
-    def __init__(self, tree, maxEvents = -1):
+    def __init__(self, tree, maxEvents = -1, beginEntry = 0):
         self.file = tree.GetDirectory().GetFile() # so a file won't close
         self.tree = tree
-        self.nEvents = min(self.tree.GetEntries(), maxEvents) if (maxEvents > -1) else self.tree.GetEntries()
+        self.beginEntry = beginEntry
+        if maxEvents > -1:
+            self.nEvents = min(self.tree.GetEntries(), maxEvents) - self.beginEntry
+        else:
+            self.nEvents = self.tree.GetEntries() - self.beginEntry
+        if self.nEvents < 0:
+            raise RuntimeError,"nEvents is negative"
         self.iEvent = -1
 
     def __getitem__(self, i):
@@ -51,7 +57,7 @@ class Events(object):
         return self
 
     def __iter__(self):
-        for self.iEvent in xrange(self.nEvents):
+        for self.iEvent in xrange(self.beginEntry,self.beginEntry+self.nEvents):
             self.tree.GetEntry(self.iEvent)
             yield self
         self.iEvent = -1

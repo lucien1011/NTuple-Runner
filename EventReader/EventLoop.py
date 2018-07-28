@@ -20,7 +20,7 @@ class EventLoop(object):
         events = self.eventBuilder.build(self.dataset)
         self._reportProgress(progressReporter, events)
         self.reader.begin(events)
-        for event in events:
+        for ievent,event in enumerate(events):
             self._reportProgress(progressReporter, event)
             if not self.eventSelection(event): continue
             self.reader.event(event)

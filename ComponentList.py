@@ -26,6 +26,8 @@ class Component(object):
         self.fdConfigs = fdConfigs 
         self.fdFiles = []
         self.fdTrees = []
+        self.beginEntry = 0
+        self.reportInterval = 1000
 
 class ComponentList(object):
     def __init__(self,component_list):

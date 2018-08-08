@@ -2,10 +2,12 @@
 from Branch import Branch
 from BranchAddressManager import BranchAddressManager
 from BranchAddressManagerForVector import BranchAddressManagerForVector
+from BranchAddressManagerForString import BranchAddressManagerForString
 
 ##__________________________________________________________________||
 branchAddressManager = BranchAddressManager()
 branchAddressManagerForVector = BranchAddressManagerForVector()
+branchAddressManagerForString = BranchAddressManagerForString()
 
 ##__________________________________________________________________||
 class BranchBuilder(object):
@@ -35,6 +37,9 @@ class BranchBuilder(object):
 
         branch = self._try_std_vector(tree, name)
         if branch is not None: return branch
+        
+        branch = self._try_string(tree, name)
+        if branch is not None: return branch
 
         self._unknown_type_warning(tree, name)
 
@@ -60,6 +65,10 @@ class BranchBuilder(object):
     def _try_std_vector(self, tree, name):
         itsVector = branchAddressManagerForVector.getVector(tree, name)
         return itsVector # this can be used as a branch
+
+    def _try_string(self, tree, name):
+        itsString = branchAddressManagerForString.getString(tree, name)
+        return itsString
 
     def _unknown_type_warning(self, tree, name):
         import logging

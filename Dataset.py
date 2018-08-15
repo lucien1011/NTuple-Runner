@@ -1,16 +1,15 @@
 from .ComponentList import ComponentList
+from .BaseDataset import BaseDataset
 from .Events import BEvents
 from .Events import MultiBEvents
 from .FileInfo import FileInfo
 import ROOT
 import copy
 
-class Dataset(object):
+class Dataset(BaseDataset):
     def __init__(self,name,componentList,isMC=True,sumw=None,xs=None,maxEvents=-1,build_type="TTree",lumi=1.,json=None,isSignal=False,plotLabel="",xsFactor=None,skipWeight=False):
-        self.name = name
+        super(BaseDataset,self).__init__(name,isMC,isSignal)
         self.componentList = componentList
-        self.isMC = isMC
-        self.isData = not self.isMC
         self.sumw = sumw
         self.xs = xs
         self.fb_to_pb_factor = 1000
@@ -19,8 +18,6 @@ class Dataset(object):
         self.lumi = lumi
         self.json = json
         self.isSignal = isSignal
-        if self.isSignal and self.isData:
-            raise RuntimeError, "Dataset "+self.name+" can't be data and signal at the same time"
         self.plotLabel = plotLabel if plotLabel else self.name
         self.xsFactor = xsFactor
         self.skipWeight = skipWeight

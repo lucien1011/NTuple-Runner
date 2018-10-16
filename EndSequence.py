@@ -33,6 +33,7 @@ class EndSequence(object):
                 self.hadder.haddSampleDir(inputInfo.outputDir+sampleName)
         self.collector.openFiles(self.collector.samples,inputInfo)
         self.collector.openFiles(self.collector.mergeSamples,inputInfo)
+        if self.haddAllSamples: self.collector.openFiles([self.allSampleName,],inputInfo)
         for module in self.moduleList:
             module(self.collector)
         self.collector.closeFiles()

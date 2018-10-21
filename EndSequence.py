@@ -1,9 +1,10 @@
 from Core.Collector import Collector
 from Hadder import Hadder
+from .BaseObject import BaseModule
 
 import os,ROOT
 
-class EndSequence(object):
+class EndSequence(BaseModule):
     def __init__(self,skipHadd=False,haddAllSamples=False):
         self.moduleList = []
         self.collector = Collector()
@@ -49,7 +50,3 @@ class EndSequence(object):
             raise IndexError
         else:
             return self.moduleList[index]
-
-    def makedirs(self,path):
-        if not os.path.exists(os.path.abspath(path)):
-            os.makedirs(os.path.abspath(path))

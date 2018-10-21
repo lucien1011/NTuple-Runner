@@ -1,6 +1,7 @@
 import os
+from .BaseObject import BaseModule
 
-class Module(object):
+class Module(BaseModule):
     def __init__(self,name):
         self.name = name
     
@@ -15,8 +16,3 @@ class Module(object):
 
     def analyze(self,event):
         pass
-
-    @staticmethod
-    def makedirs(outputDir):
-        if not os.path.exists(os.path.abspath(outputDir)):
-            os.makedirs(os.path.abspath(outputDir))

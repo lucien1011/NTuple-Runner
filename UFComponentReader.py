@@ -5,11 +5,11 @@ class AllEvents(object):
     def __call__(self, event): return True
 
 class UFComponentReader(object):
-    def __init__(self, eventBuilder, eventLoopRunner, sequence, writer):
+    def __init__(self, eventBuilder, eventLoopRunner, sequence, writer, selection=None):
         self.eventBuilder       = eventBuilder
         self.eventLoopRunner    = eventLoopRunner
         self.sequence           = sequence
-        self.eventSelection     = AllEvents()
+        self.eventSelection     = AllEvents() if not selection else selection
         self.EventLoop          = EventLoop
         self.writer             = writer
         pass

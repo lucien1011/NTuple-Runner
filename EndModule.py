@@ -1,10 +1,6 @@
 import os
+from .BaseObject import BaseModule
 
-class EndModule(object):
+class EndModule(BaseModule):
     def __call__(self,collector):
         pass
-
-    @staticmethod
-    def makedirs(outputDir):
-        if not os.path.exists(os.path.abspath(outputDir)):
-            os.makedirs(os.path.abspath(outputDir))

@@ -2,6 +2,7 @@ import os,ROOT,pickle
 
 supportRootObjs = ["TH1D","TH2D",]
 pickleObjs = ["list","dict",]
+textFileObjs = ["TextFile",]
 
 class Writer(object):
     def __init__(self,dataset,outputInfo):
@@ -12,6 +13,7 @@ class Writer(object):
         self.objs = {}
         self.rootObjs = {}
         self.pickleObjs = {}
+        self.textFileObjs = {}
     
     @staticmethod
     def makedirs(outputDir):
@@ -40,6 +42,8 @@ class Writer(object):
                 self.rootObjs[keyName] = self.objs[keyName]
             if objType in pickleObjs:
                 self.pickleObjs[keyName] = self.objs[keyName]
+            if objType in textFileObjs:
+                self.textFileObjs[keyName] = self.objs[keyName]
         else:
             raise RuntimeError, "Object with internal name "+keyName+" exists in the writer"
             
@@ -50,6 +54,9 @@ class Writer(object):
         elif objType == "dict":
             obj = {}
             return obj
+        elif objType == "TextFile":
+            obj = open(*args)
+            return obj
         elif objType in supportRootObjs:
             obj = getattr(ROOT,objType)(*args)
             return obj 
@@ -59,3 +66,5 @@ class Writer(object):
         for keyName,obj in self.pickleObjs.iteritems():
             outputPath = self.outputDir+"/"+keyName+".pkl"
             pickle.dump(obj,open(outputPath,"w"))
+        for keyName,obj in self.textFileObjs.iteritems():
+            obj.close()

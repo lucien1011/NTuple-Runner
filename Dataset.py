@@ -31,6 +31,15 @@ class Dataset(BaseDataset):
         self.sumw = inputHist.Integral()
         inputFile.Close()
 
+    def setSumWeightByDir(self,inputDir,histPath="histos/nevents",inUFTier2=False):
+        allFilePaths = [os.path.join(inputDir,f) for f in os.listdir(inputDir) if ".root" in f]
+        self.sumw = 0.
+        for filePath in allFilePaths:
+            inputFile = ROOT.TFile.Open(filePath,"READ")
+            inputHist = inputFile.Get(histPath)
+            self.sumw += inputHist.Integral()
+            inputFile.Close()
+
     def setSumWeightFromHeppySkimReport(self,textFilePath):
         eventsFile = open(textFilePath,"r").readlines()
         for line in eventsFile:

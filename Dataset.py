@@ -4,11 +4,11 @@ from .Events import BEvents
 from .Events import MultiBEvents
 from .FileInfo import FileInfo
 import ROOT
-import copy
+import copy,os
 
 class Dataset(BaseDataset):
     def __init__(self,name,componentList,isMC=True,sumw=None,xs=None,maxEvents=-1,build_type="TTree",lumi=1.,json=None,isSignal=False,plotLabel="",xsFactor=None,skipWeight=False):
-        super(BaseDataset,self).__init__(name,isMC,isSignal)
+        super(Dataset,self).__init__(name,isMC,isSignal)
         self.componentList = componentList
         self.sumw = sumw
         self.xs = xs
@@ -39,6 +39,11 @@ class Dataset(BaseDataset):
             inputHist = inputFile.Get(histPath)
             self.sumw += inputHist.Integral()
             inputFile.Close()
+
+    def saveSumWeightToPath(self,outputPath):
+        txtFile = open(outputPath,"w")
+        txtFile.write(str(self.sumw))
+        txtFile.close()
 
     def setSumWeightFromHeppySkimReport(self,textFilePath):
         eventsFile = open(textFilePath,"r").readlines()

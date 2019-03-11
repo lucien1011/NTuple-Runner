@@ -40,6 +40,14 @@ class Dataset(BaseDataset):
             self.sumw += inputHist.Integral()
             inputFile.Close()
 
+    def setSumWeightByTxt(self,inputFile,histPath="histos/nevents",inUFTier2=False):
+        txtFile = open(inputFile,"r")
+        txtFileLines = txtFile.readlines()
+        self.sumw = 0.
+        for lines in txtFileLines:
+            self.sumw = float(lines)
+        txtFile.close()
+
     def saveSumWeightToPath(self,outputPath):
         txtFile = open(outputPath,"w")
         txtFile.write(str(self.sumw))

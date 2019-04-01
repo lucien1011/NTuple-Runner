@@ -53,7 +53,7 @@ class Dataset(BaseDataset):
             inputFile.Close()
         print "Bad files: "+"\n".join(badFileList)
 
-    def setSumWeightByTxt(self,inputFile,histPath="histos/nevents",inUFTier2=False):
+    def setSumWeightByTxt(self,inputFile):
         txtFile = open(inputFile,"r")
         txtFileLines = txtFile.readlines()
         self.sumw = 0.

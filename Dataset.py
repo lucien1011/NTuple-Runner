@@ -31,14 +31,27 @@ class Dataset(BaseDataset):
         self.sumw = inputHist.Integral()
         inputFile.Close()
 
-    def setSumWeightByDir(self,inputDir,histPath="histos/nevents",inUFTier2=False):
+    def setSumWeightByDir(self,inputDir,histPath="histos/nevents",inUFTier2=False,verbose=False):
         allFilePaths = [os.path.join(inputDir,f) for f in os.listdir(inputDir) if ".root" in f]
         self.sumw = 0.
+        badFileList = []
         for filePath in allFilePaths:
             inputFile = ROOT.TFile.Open(filePath,"READ")
-            inputHist = inputFile.Get(histPath)
-            self.sumw += inputHist.Integral()
+            if inputFile.IsZombie() or inputFile.TestBit(ROOT.TFile.kRecovered):
+                print "Warning, this file %s is bad"%filePath
+                badFileList.append(filePath)
+                continue
+            if verbose:
+                print "-"*20
+                print "Reading histogram from "+filePath
+            try:
+                inputHist = inputFile.Get(histPath)
+                self.sumw += inputHist.Integral()
+            except AttributeError:
+                badFileList.append(filePath)
+
             inputFile.Close()
+        print "Bad files: "+"\n".join(badFileList)
 
     def setSumWeightByTxt(self,inputFile,histPath="histos/nevents",inUFTier2=False):
         txtFile = open(inputFile,"r")

@@ -1,8 +1,14 @@
-import os,ROOT,pickle
+import os,ROOT,pickle,csv
 
 supportRootObjs = ["TH1D","TH2D",]
 pickleObjs = ["list","dict",]
 textFileObjs = ["TextFile",]
+csvFileObjs = ["CSVFile",]
+
+class CSVFile(object):
+    def __init__(self,pyFile,writer):
+        self.pyFile = pyFile
+        self.writer = writer
 
 class Writer(object):
     def __init__(self,dataset,outputInfo):
@@ -14,6 +20,7 @@ class Writer(object):
         self.rootObjs = {}
         self.pickleObjs = {}
         self.textFileObjs = {}
+        self.csvFileObjs = {}
     
     @staticmethod
     def makedirs(outputDir):
@@ -44,6 +51,8 @@ class Writer(object):
                 self.pickleObjs[keyName] = self.objs[keyName]
             if objType in textFileObjs:
                 self.textFileObjs[keyName] = self.objs[keyName]
+            if objType in csvFileObjs:
+                self.csvFileObjs[keyName] = self.objs[keyName]
         else:
             raise RuntimeError, "Object with internal name "+keyName+" exists in the writer"
             
@@ -57,6 +66,9 @@ class Writer(object):
         elif objType == "TextFile":
             obj = open(*args)
             return obj
+        elif objType == "CSVFile":
+            obj = self.makeCSVObj(*args)
+            return obj
         elif objType in supportRootObjs:
             obj = getattr(ROOT,objType)(*args)
             return obj 
@@ -68,3 +80,11 @@ class Writer(object):
             pickle.dump(obj,open(outputPath,"w"))
         for keyName,obj in self.textFileObjs.iteritems():
             obj.close()
+        for keyName,obj in self.csvFileObjs.iteritems():
+            obj.pyFile.close()
+
+    def makeCSVObj(self,fileName,writeOption):
+        pyFile = open(os.path.join(self.outputDir,fileName),writeOption)
+        writer = csv.writer(pyFile)
+        return CSVFile(pyFile,writer)
+

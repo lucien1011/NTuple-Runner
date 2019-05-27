@@ -1,5 +1,5 @@
 import os
-from .BaseObject import BaseModule
+from .BaseModule import BaseModule
 
 class EndModule(BaseModule):
     def __call__(self,collector):

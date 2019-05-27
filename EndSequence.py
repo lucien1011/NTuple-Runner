@@ -1,6 +1,6 @@
 from Core.Collector import Collector
 from Hadder import Hadder
-from .BaseObject import BaseModule
+from .BaseModule import BaseModule
 
 import os,ROOT
 

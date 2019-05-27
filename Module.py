@@ -1,5 +1,5 @@
 import os
-from .BaseObject import BaseModule
+from .BaseModule import BaseModule
 
 class Module(BaseModule):
     def __init__(self,name):

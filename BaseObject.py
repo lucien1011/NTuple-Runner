@@ -1,13 +1,18 @@
-import os
+class BaseObject(object):
+    '''Base class. The attributes are used to store parameters of any type'''
+    def __init__(self,name,**kwargs):
+        self.name = name
 
-class BaseModule(object):
-    @staticmethod
-    def makedirs(outputDir):
-        if not os.path.exists(os.path.abspath(outputDir)):
-            os.makedirs(os.path.abspath(outputDir))
-
-    @staticmethod
-    def makedirs_with_file_path(outputPath):
-        dir_path = os.path.abspath(os.path.dirname(outputPath))
-        if not os.path.exists(dir_path):
-            os.makedirs(dir_path)
+        '''All keyword arguments are added as attributes.'''
+        self.__dict__.update( kwargs )
+        pass        
+        
+    def __str__(self):
+        '''A useful printout'''
+        header = '{type}: {name}'.format( type=self.__class__.__name__, name=self.name)
+        varlines = ['\t{var:<15}:   {value}'.format(var=var, value=value) \
+                    for var,value in sorted(vars(self).iteritems()) \
+                    if var is not 'name']
+        all = [ header ]
+        all.extend(varlines)
+        return '\n'.join( all )#

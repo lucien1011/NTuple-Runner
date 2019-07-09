@@ -1,9 +1,17 @@
 import os,ROOT
+from .mkdir_p import mkdir_p 
 
 class Collector(object):
     def __init__(self):
         self.objDict = {}
         self.fileDict = {}
+        self.saveObjDict = {}
+
+    def addObj(self,key,obj):
+        if key not in self.saveObjDict:
+            self.saveObjDict[key] = obj
+        else:
+            raise RuntimeError,"Overwriting object in objDict in Collector"
 
     def makeSampleList(self,componentList):
         self.samples = [cmp.name for cmp in componentList]
@@ -40,3 +48,10 @@ class Collector(object):
     def closeFiles(self):
         for fileToClose in self.fileDict.values():
             fileToClose.Close()
+
+    def saveFile(self,filePath):
+        mkdir_p(os.path.dirname(filePath))
+        outFile = ROOT.TFile(filePath,"RECREATE")
+        for key,item in self.saveObjDict.iteritems():
+            item.Write()
+        outFile.Close()

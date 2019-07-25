@@ -49,9 +49,12 @@ class Collector(object):
         for fileToClose in self.fileDict.values():
             fileToClose.Close()
 
-    def saveFile(self,filePath):
-        mkdir_p(os.path.dirname(filePath))
-        outFile = ROOT.TFile(filePath,"RECREATE")
-        for key,item in self.saveObjDict.iteritems():
+    def saveFile(self,inputInfo,sample,fileName):
+        inputPath = inputInfo.outputDir+"/"+sample+"/"+fileName
+        mkdir_p(os.path.dirname(inputPath))
+        outFile = ROOT.TFile(inputPath,"RECREATE")
+        #for key,item in self.saveObjDict.iteritems():
+        for key in self.saveObjDict:
+            item = ROOT.gDirectory.Get(key)
             item.Write()
         outFile.Close()

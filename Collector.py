@@ -53,8 +53,8 @@ class Collector(object):
         inputPath = inputInfo.outputDir+"/"+sample+"/"+fileName
         mkdir_p(os.path.dirname(inputPath))
         outFile = ROOT.TFile(inputPath,"RECREATE")
-        #for key,item in self.saveObjDict.iteritems():
-        for key in self.saveObjDict:
-            item = ROOT.gDirectory.Get(key)
+        for key,item in self.saveObjDict.iteritems():
+        #for key in self.saveObjDict:
+            #item = ROOT.gDirectory.Get(key)
             item.Write()
         outFile.Close()

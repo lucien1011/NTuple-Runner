@@ -16,15 +16,16 @@ class EndSequence(BaseModule):
         self.allDataName = "Data"
         self.skipComponentHadd = skipComponentHadd
 
-    def run(self,inputInfo,componentList,mergeSampleDict={}):
+    def run(self,inputInfo,componentList,mergeSampleDict={},mergeSigSampleDict={}):
         self.collector.makeSampleList(componentList)
-        self.collector.makeMergedSampleList(componentList,mergeSampleDict)
+        self.collector.makeMergedSampleList(componentList,mergeSampleDict,mergeSigSampleDict)
         for sampleName in self.collector.mergeSamples:
             self.makedirs(inputInfo.outputDir+sampleName)
         if not self.skipHadd:
             if not self.skipComponentHadd:
                 for sampleName in self.collector.samples:
                     print "Hadding "+sampleName
+                    self.makedirs(inputInfo.outputDir+sampleName)
                     self.hadder.makeHaddScript(inputInfo.outputDir+sampleName,[sampleName],inputInfo)
                     self.hadder.haddSampleDir(inputInfo.outputDir+sampleName)
             if self.haddAllSamples:
@@ -37,12 +38,17 @@ class EndSequence(BaseModule):
                 self.makedirs(inputInfo.outputDir+self.allDataName)
                 self.hadder.makeHaddScript(inputInfo.outputDir+self.allDataName,self.collector.dataSamples,inputInfo)
                 self.hadder.haddSampleDir(inputInfo.outputDir+self.allDataName)
-            for sampleName in self.collector.mergeSamples:
+            for sampleName in self.collector.mergeSamples+self.collector.mergeSigSamples:
                 print "Hadding (and merging) "+sampleName
-                self.hadder.makeHaddScript(inputInfo.outputDir+sampleName,self.collector.mergeSampleDict[sampleName],inputInfo)
+                if sampleName in self.collector.mergeSamples:
+                    tmpDict = self.collector.mergeSampleDict
+                elif sampleName in self.collector.mergeSigSamples:
+                    tmpDict = self.collector.mergeSigSampleDict
+                self.hadder.makeHaddScript(inputInfo.outputDir+sampleName,tmpDict[sampleName],inputInfo)
                 self.hadder.haddSampleDir(inputInfo.outputDir+sampleName)
         self.collector.openFiles(self.collector.samples,inputInfo)
         self.collector.openFiles(self.collector.mergeSamples,inputInfo)
+        self.collector.openFiles(self.collector.mergeSigSamples,inputInfo)
         if self.haddAllSamples: self.collector.openFiles([self.allSampleName,],inputInfo)
         for module in self.moduleList:
             module(self.collector)

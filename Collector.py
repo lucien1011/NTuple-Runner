@@ -21,17 +21,28 @@ class Collector(object):
         self.bkgSamples = [cmp.name for cmp in componentList if not cmp.isSignal and cmp.isMC]
         self.sampleDict = {cmp.name: cmp for cmp in componentList}
 
-    def makeMergedSampleList(self,componentList,mergeCmpDict):
+    def makeMergedSampleList(self,componentList,mergeCmpDict,mergeSigCmpDict):
         self.mergeSamples = []
         for sampleName in mergeCmpDict:
-            if all([name not in self.samples for name in mergeCmpDict[sampleName]]): continue
+            if all([name not in self.bkgSamples+self.dataSamples for name in mergeCmpDict[sampleName]]): continue
             self.mergeSamples.append(sampleName)
         self.mergeSampleDict = {}
         for sampleName in self.mergeSamples:
             self.mergeSampleDict[sampleName] = []
             for name in mergeCmpDict[sampleName]:
-                if name not in self.samples: continue
+                if name not in self.bkgSamples+self.dataSamples: continue
                 self.mergeSampleDict[sampleName].append(name)
+
+        self.mergeSigSamples = []
+        for sampleName in mergeSigCmpDict:
+            if all([name not in self.signalSamples for name in mergeSigCmpDict[sampleName]]): continue
+            self.mergeSigSamples.append(sampleName)
+        self.mergeSigSampleDict = {}
+        for sampleName in self.mergeSigSamples:
+            self.mergeSigSampleDict[sampleName] = []
+            for name in mergeSigCmpDict[sampleName]:
+                if name not in self.signalSamples: continue
+                self.mergeSigSampleDict[sampleName].append(name)
     
     def openFiles(self,samples,inputInfo):
         for sample in samples:

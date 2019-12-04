@@ -6,6 +6,9 @@ class Sequence(object):
     def add(self,module):
         self.moduleList.append(module)
 
+    def remove(self,module):
+        self.moduleList.remove(module)
+
     def __len__(self):
         return len(self.moduleList)
 

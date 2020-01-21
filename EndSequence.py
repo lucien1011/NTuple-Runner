@@ -50,6 +50,7 @@ class EndSequence(BaseModule):
         self.collector.openFiles(self.collector.mergeSamples,inputInfo)
         self.collector.openFiles(self.collector.mergeSigSamples,inputInfo)
         if self.haddAllSamples: self.collector.openFiles([self.allSampleName,],inputInfo)
+        if self.haddDataSamples: self.collector.openFiles([self.allDataName,],inputInfo)
         for module in self.moduleList:
             module(self.collector)
         self.collector.closeFiles()

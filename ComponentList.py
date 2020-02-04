@@ -34,8 +34,12 @@ class Component(object):
         ROOT.gROOT.SetBatch(ROOT.kTRUE)
         inputFile = ROOT.TFile.Open(self.fileName,"READ")
         tree = inputFile.Get(treeName)
-        tree.GetEntry(0)
-        return getattr(tree,branchName)
+        sumw = 0.
+        nEntries = tree.GetEntries()
+        for iEntry in range(nEntries):
+            tree.GetEntry(iEntry)
+            sumw += getattr(tree,branchName)
+        return sumw
 
 class ComponentList(object):
     def __init__(self,component_list):

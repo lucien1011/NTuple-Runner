@@ -19,7 +19,7 @@ class EndSequence(BaseModule):
     def run(self,inputInfo,componentList,mergeSampleDict={},mergeSigSampleDict={}):
         self.collector.makeSampleList(componentList)
         self.collector.makeMergedSampleList(componentList,mergeSampleDict,mergeSigSampleDict)
-        for sampleName in self.collector.mergeSamples:
+        for sampleName in self.collector.mergeSamples+self.collector.mergeSigSamples:
             self.makedirs(inputInfo.outputDir+sampleName)
         if not self.skipHadd:
             if not self.skipComponentHadd:

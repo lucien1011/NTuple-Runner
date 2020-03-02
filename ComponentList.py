@@ -3,6 +3,7 @@ import os
 from .Utils.UFTier2Utils import listdir_uberftp
 from .FileInfo import FileInfo
 import copy
+import ROOT
 
 class FriendTreeConfig(object):
     def __init__(self,path,treeName,inUFTier2=False):
@@ -28,6 +29,17 @@ class Component(object):
         self.fdTrees = []
         self.beginEntry = 0
         self.reportInterval = 1000
+
+    def getSumWeightNanoAOD(self,treeName="Runs",branchName="genEventSumw"):
+        ROOT.gROOT.SetBatch(ROOT.kTRUE)
+        inputFile = ROOT.TFile.Open(self.fileName,"READ")
+        tree = inputFile.Get(treeName)
+        sumw = 0.
+        nEntries = tree.GetEntries()
+        for iEntry in range(nEntries):
+            tree.GetEntry(iEntry)
+            sumw += getattr(tree,branchName)
+        return sumw
 
 class ComponentList(object):
     def __init__(self,component_list):

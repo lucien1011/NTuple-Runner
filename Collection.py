@@ -26,6 +26,9 @@ class Object(object):
     def getFriendValue(self,postfix,quantity):
         return getattr(self._event,self._objName[:-1]+postfix+self._objName[-1]+quantity)[self._index]
 
+    def getIndex(self):
+        return self._index
+
 class Collection(object):
     def __init__(self,event,objName):
         self._event   = event   

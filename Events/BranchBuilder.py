@@ -34,6 +34,9 @@ class BranchBuilder(object):
 
         branch = self._try_ctypes_or_array_of_ctypes(tree, name)
         if branch is not None: return branch
+        
+        branch = self._try_std_vector_std_vector(tree, name)
+        if branch is not None: return branch
 
         branch = self._try_std_vector(tree, name)
         if branch is not None: return branch
@@ -47,12 +50,6 @@ class BranchBuilder(object):
 
     def _branch_exist(self, tree, name):
         leafNames = [l.GetName() for l in tree.GetListOfLeaves()]
-        list_fd = tree.GetListOfFriends()
-        try: 
-            if list_fd.GetSize():
-                for fd in list_fd:
-                    leafNames.extend([k.GetName() for k in fd.GetTree().GetListOfLeaves()])
-        except ReferenceError: pass
         if name in leafNames: return True
         return False
 
@@ -65,6 +62,14 @@ class BranchBuilder(object):
     def _try_std_vector(self, tree, name):
         itsVector = branchAddressManagerForVector.getVector(tree, name)
         return itsVector # this can be used as a branch
+
+    def _try_std_vector_std_vector(self, tree, name):
+        itsVector = branchAddressManagerForVector.getVectorVector(tree, name)
+        return itsVector # this can be used as a branch
+
+    def _try_string(self, tree, name):
+        itsString = branchAddressManagerForString.getString(tree, name)
+        return itsString
 
     def _try_string(self, tree, name):
         itsString = branchAddressManagerForString.getString(tree, name)

@@ -28,12 +28,6 @@ class BranchAddressManagerForVector(object):
     def _getVector(self, tree, branchName):
 
         leafNames = [l.GetName() for l in tree.GetListOfLeaves()]
-        list_fd = tree.GetListOfFriends()
-        try: 
-            if list_fd.GetSize():
-                for fd in list_fd:
-                    leafNames.extend([k.GetName() for k in fd.GetTree().GetListOfLeaves()])
-        except ReferenceError: pass
 
         if branchName not in leafNames:
             return None
@@ -47,6 +41,38 @@ class BranchAddressManagerForVector(object):
 
         tree.SetBranchStatus(leaf.GetName(), 1)
         itsVector = ROOT.vector(elementtypename)()
+        tree.SetBranchAddress(leaf.GetName(), itsVector)
+
+        return itsVector
+
+    def getVectorVector(self, tree, branchName):
+        """return the ROOT.vector object for the branch.
+        """
+
+        if (tree, branchName) in self.__class__.addressDict:
+            return self.__class__.addressDict[(tree, branchName)]
+
+        itsVector = self._getVectorVector(tree, branchName)
+        self.__class__.addressDict[(tree, branchName)] = itsVector
+
+        return itsVector
+
+    def _getVectorVector(self, tree, branchName):
+        
+        leafNames = [l.GetName() for l in tree.GetListOfBranches()]
+
+        if branchName not in leafNames:
+            return None
+
+        leaf = tree.GetLeaf(branchName)
+        typename = leaf.GetTypeName() # e.g., "vector<string>"
+        match = re.search(r'^(.*)<(.*)<(.*)> >$', typename)
+        if not match: return None
+        if match.group(1) != 'vector' and match.group(2) != 'vector': return None
+        elementtypename = match.group(3) # e.g., "string", "int"
+
+        tree.SetBranchStatus(leaf.GetName(), 1)
+        itsVector = ROOT.vector(ROOT.vector(elementtypename))()
         tree.SetBranchAddress(leaf.GetName(), itsVector)
 
         return itsVector

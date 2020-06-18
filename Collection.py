@@ -2,9 +2,9 @@ import ROOT
 
 class Object(object):
     """Class that allows seeing a set branches plus possibly an index as an Object"""
-    def __init__(self,event,objName,index):
+    def __init__(self,event,objName,index,divider="_"):
         self._event   = event
-        self._objName = objName+"_"
+        self._objName = objName+divider
         self._index   = index
         self._p4      = None
         pass
@@ -30,9 +30,15 @@ class Object(object):
         return self._index
 
 class Collection(object):
-    def __init__(self,event,objName):
+    def __init__(self,event,objName,divider="_",length_var=None):
         self._event   = event   
         self._objName = objName
+        self._divider = divider
+        if not length_var:
+            self._length_var = self._objName+self._divider+"pt"
+        else:
+            self._length_var = length_var
+        self._count_length = not bool(length_var)
         self._phyDict = {}
         self._validateInput()
 
@@ -41,13 +47,15 @@ class Collection(object):
             raise IndexError
         else:
             if index not in self._phyDict:
-                self._phyDict[index] = Object(self._event,self._objName,index)
+                self._phyDict[index] = Object(self._event,self._objName,index,divider=self._divider)
             return self._phyDict[index]
 
     def __len__(self):
-        # probably a hack
-        return len(getattr(self._event,self._objName+"_pt"))
+        if self._count_length:
+            return len(getattr(self._event,self._length_var))
+        else:
+            return getattr(self._event,self._length_var)[0]
 
     def _validateInput(self):
-        if not hasattr(self._event,self._objName+"_pt"):
+        if not hasattr(self._event,self._length_var):
             raise AttributeError, "Object {} does not exist in tree".format(self._objName)

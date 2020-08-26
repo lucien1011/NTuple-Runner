@@ -38,6 +38,7 @@ class BranchAddressManagerForVector(object):
         if not match: return None
         if match.group(1) != 'vector': return None
         elementtypename = match.group(2) # e.g., "string", "int"
+        if 'vector' in elementtypename: return None
 
         tree.SetBranchStatus(leaf.GetName(), 1)
         itsVector = ROOT.vector(elementtypename)()

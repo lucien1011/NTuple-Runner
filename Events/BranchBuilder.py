@@ -34,11 +34,11 @@ class BranchBuilder(object):
 
         branch = self._try_ctypes_or_array_of_ctypes(tree, name)
         if branch is not None: return branch
-        
-        branch = self._try_std_vector_std_vector(tree, name)
-        if branch is not None: return branch
 
         branch = self._try_std_vector(tree, name)
+        if branch is not None: return branch
+
+        branch = self._try_std_vector_std_vector(tree, name)
         if branch is not None: return branch
         
         branch = self._try_string(tree, name)

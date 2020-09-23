@@ -17,7 +17,7 @@ class BranchAddressManagerForVector(object):
         """return the ROOT.vector object for the branch.
         """
 
-        if (tree, branchName) in self.__class__.addressDict:
+        if (tree, branchName) in self.__class__.addressDict and self.__class__.addressDict[(tree, branchName)] is not None:
             return self.__class__.addressDict[(tree, branchName)]
 
         itsVector = self._getVector(tree, branchName)
@@ -49,10 +49,9 @@ class BranchAddressManagerForVector(object):
     def getVectorVector(self, tree, branchName):
         """return the ROOT.vector object for the branch.
         """
-
-        if (tree, branchName) in self.__class__.addressDict:
+        if (tree, branchName) in self.__class__.addressDict and self.__class__.addressDict[(tree, branchName)] is not None:
             return self.__class__.addressDict[(tree, branchName)]
-
+        
         itsVector = self._getVectorVector(tree, branchName)
         self.__class__.addressDict[(tree, branchName)] = itsVector
 
@@ -61,7 +60,7 @@ class BranchAddressManagerForVector(object):
     def _getVectorVector(self, tree, branchName):
         
         leafNames = [l.GetName() for l in tree.GetListOfBranches()]
-
+        
         if branchName not in leafNames:
             return None
 
